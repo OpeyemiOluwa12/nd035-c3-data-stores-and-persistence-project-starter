@@ -7,7 +7,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-@Entity(name = "schedule")
+@Entity
+@Table(name = "schedule")
 public class ScheduleEntity {
 
     @Id

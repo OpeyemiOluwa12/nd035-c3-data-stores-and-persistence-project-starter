@@ -1,11 +1,13 @@
 package com.udacity.jdnd.course3.critter.entities;
 
 import com.udacity.jdnd.course3.critter.pet.PetType;
+import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity(name = "pet")
+@Entity
+@Table(name = "pet")
 public class PetEntity {
 
     @Id
@@ -15,6 +17,7 @@ public class PetEntity {
     @Enumerated(EnumType.STRING)
     private PetType type;
 
+    @Nationalized
     private String name;
 
     private long ownerId;
@@ -22,6 +25,14 @@ public class PetEntity {
     private LocalDate birthDate;
 
     private String notes;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
+
+    @ManyToOne
+    @JoinColumn(name = "schedule_id_pet" )
+    private ScheduleEntity schedule;
 
 
     public long getId() {
@@ -70,5 +81,21 @@ public class PetEntity {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
+    }
+
+    public ScheduleEntity getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(ScheduleEntity schedule) {
+        this.schedule = schedule;
     }
 }

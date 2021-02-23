@@ -7,6 +7,7 @@ import java.time.DayOfWeek;
 import java.util.Set;
 
 @Entity
+@Table(name = "employee")
 public class EmployeeEntity {
 
     @Id
@@ -24,6 +25,10 @@ public class EmployeeEntity {
     @Enumerated(EnumType.STRING)
     @JoinTable(name = "employee_days_available")
     private Set<DayOfWeek> daysAvailable;
+
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "employee_id")
+    private ScheduleEntity schedule;
 
     public long getId() {
         return id;

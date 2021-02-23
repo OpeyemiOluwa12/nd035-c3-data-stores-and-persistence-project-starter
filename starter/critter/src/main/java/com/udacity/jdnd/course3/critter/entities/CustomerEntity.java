@@ -1,12 +1,10 @@
 package com.udacity.jdnd.course3.critter.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
-@Entity(name = "customer")
+@Entity
+@Table(name = "customer")
 public class CustomerEntity {
 
     @Id
