@@ -38,11 +38,11 @@ public class CustomerService {
 
     /**
      * get the owner by pet
-     * @param ownerId of the pet
+     * @param petId of the pet
      * @return customer
      */
-    public CustomerEntity getOwnerByPet(long ownerId) {
-        PetEntity petEntity = petRepository.findByOwnerIdEquals(ownerId);
+    public CustomerEntity getOwnerByPet(long petId) {
+        PetEntity petEntity = petRepository.findByCustomer_Id(petId);
         return petEntity.getCustomer();
     }
 }

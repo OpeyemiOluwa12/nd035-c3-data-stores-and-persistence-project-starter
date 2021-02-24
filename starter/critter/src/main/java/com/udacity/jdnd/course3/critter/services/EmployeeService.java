@@ -5,6 +5,7 @@ import com.udacity.jdnd.course3.critter.repositories.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -47,6 +48,10 @@ public class EmployeeService {
         employeeEntity.setId(employeeId);
         employeeRepository.save(employeeEntity);
 
+    }
+
+    public List<EmployeeEntity> findAllEmployee(){
+        return employeeRepository.findAll();
     }
 
 
