@@ -26,7 +26,7 @@ public class PetEntity {
 
     private String notes;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 

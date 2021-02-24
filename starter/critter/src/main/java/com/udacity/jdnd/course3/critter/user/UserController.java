@@ -4,11 +4,12 @@ import com.udacity.jdnd.course3.critter.entities.CustomerEntity;
 import com.udacity.jdnd.course3.critter.entities.EmployeeEntity;
 import com.udacity.jdnd.course3.critter.services.CustomerService;
 import com.udacity.jdnd.course3.critter.services.EmployeeService;
+import com.udacity.jdnd.course3.critter.utils.Commons;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,15 +28,18 @@ public class UserController {
 
     private final CustomerService customerService;
 
-    public UserController(EmployeeService employeeService, CustomerService customerService) {
+    private final Commons commons;
+
+    public UserController(EmployeeService employeeService, CustomerService customerService, Commons commons) {
         this.employeeService = employeeService;
         this.customerService = customerService;
+        this.commons = commons;
     }
 
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO) {
-        CustomerEntity customerEntity = customerService.saveCustomer((CustomerEntity) convertObjectToObject(customerDTO, new CustomerEntity()));
-        return ((CustomerDTO) convertObjectToObject(customerEntity, new CustomerDTO()));
+        CustomerEntity customerEntity = customerService.saveCustomer((CustomerEntity) commons.convertObjectToObject(customerDTO, new CustomerEntity()), customerDTO.getPetIds());
+        return ((CustomerDTO) commons.convertObjectToObject(customerEntity, new CustomerDTO()));
     }
 
     @GetMapping("/customer")
@@ -46,19 +50,19 @@ public class UserController {
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId) {
         CustomerEntity customerEntity = customerService.getOwnerByPet(petId);
-        return ((CustomerDTO) convertObjectToObject(customerEntity, new CustomerDTO()));
+        return convertCustomerEntityToCustomerDTO(customerEntity);
     }
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        EmployeeEntity employeeEntity = employeeService.saveEmployee((EmployeeEntity) convertObjectToObject(employeeDTO, new EmployeeEntity()));
-        return ((EmployeeDTO) convertObjectToObject(employeeEntity, new EmployeeDTO()));
+        EmployeeEntity employeeEntity = employeeService.saveEmployee((EmployeeEntity) commons.convertObjectToObject(employeeDTO, new EmployeeEntity()));
+        return ((EmployeeDTO) commons.convertObjectToObject(employeeEntity, new EmployeeDTO()));
     }
 
     @PostMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
         EmployeeEntity employeeEntity = employeeService.getEmployee(employeeId);
-        return ((EmployeeDTO) convertObjectToObject(employeeEntity, new EmployeeDTO()));
+        return ((EmployeeDTO) commons.convertObjectToObject(employeeEntity, new EmployeeDTO()));
     }
 
     @PutMapping("/employee/{employeeId}")
@@ -72,17 +76,28 @@ public class UserController {
     }
 
     private List<CustomerDTO> convertCustomerEntityListToCustomerDTOList(List<CustomerEntity> customerEntityList) {
-        return customerEntityList.stream().map(customerEntity -> ((CustomerDTO) convertObjectToObject(customerEntity, new CustomerDTO()))).collect(Collectors.toList());
+        return customerEntityList.stream().map(this::convertCustomerEntityToCustomerDTO).collect(Collectors.toList());
+    }
+
+    private CustomerDTO convertCustomerEntityToCustomerDTO(CustomerEntity customerEntity) {
+        CustomerDTO customerDTO = new CustomerDTO();
+        BeanUtils.copyProperties(customerEntity, customerDTO);
+
+        List<Long> petIds = new ArrayList<>();
+
+        if (customerEntity.getPets() != null) {
+            customerEntity.getPets().forEach(petEntity -> {
+                petIds.add(petEntity.getId());
+            });
+        }
+        customerDTO.setPetIds(petIds);
+        return customerDTO;
     }
 
 
     private List<EmployeeDTO> convertEmployeeEntityListToEmployeeDTOList(List<EmployeeEntity> employeeEntityList) {
-        return employeeEntityList.stream().map(customerEntity -> ((EmployeeDTO) convertObjectToObject(employeeEntityList, new EmployeeDTO()))).collect(Collectors.toList());
+        return employeeEntityList.stream().map(employeeEntity -> ((EmployeeDTO) commons.convertObjectToObject(employeeEntity, new EmployeeDTO()))).collect(Collectors.toList());
     }
 
-    private Object convertObjectToObject(Object entryClass, Object destinationClass) {
-        BeanUtils.copyProperties(entryClass, destinationClass);
-        return destinationClass;
-    }
 
 }

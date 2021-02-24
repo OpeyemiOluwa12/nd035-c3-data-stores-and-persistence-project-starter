@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,7 @@ public class CustomerEntity {
 
     private String notes;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     private List<PetEntity> pets;
 
     public long getId() {
