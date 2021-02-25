@@ -12,7 +12,7 @@ import java.util.Set;
 public class ScheduleEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
     private long id;
 

@@ -75,6 +75,11 @@ public class UserController {
         return convertEmployeeEntityListToEmployeeDTOList(employeeService.findEmployeeByAvailability(employeeDTO));
     }
 
+    @GetMapping("/employee")
+    public List<EmployeeDTO> getEmployee() {
+        return convertEmployeeEntityListToEmployeeDTOList(employeeService.findAllEmployee());
+    }
+
     private List<CustomerDTO> convertCustomerEntityListToCustomerDTOList(List<CustomerEntity> customerEntityList) {
         return customerEntityList.stream().map(this::convertCustomerEntityToCustomerDTO).collect(Collectors.toList());
     }

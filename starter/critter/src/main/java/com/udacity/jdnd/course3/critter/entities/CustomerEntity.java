@@ -9,7 +9,7 @@ import java.util.List;
 public class CustomerEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String name;
