@@ -39,7 +39,7 @@ public class UserController {
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO) {
         CustomerEntity customerEntity = customerService.saveCustomer((CustomerEntity) commons.convertObjectToObject(customerDTO, new CustomerEntity()), customerDTO.getPetIds());
-        return ((CustomerDTO) commons.convertObjectToObject(customerEntity, new CustomerDTO()));
+        return convertCustomerEntityToCustomerDTO(customerEntity);
     }
 
     @GetMapping("/customer")
@@ -67,12 +67,12 @@ public class UserController {
 
     @PutMapping("/employee/{employeeId}")
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        employeeService.setAvailability(daysAvailable, employeeId);
     }
 
     @GetMapping("/employee/availability")
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-        return convertEmployeeEntityListToEmployeeDTOList(employeeService.findAllEmployee());
+        return convertEmployeeEntityListToEmployeeDTOList(employeeService.findEmployeeByAvailability(employeeDTO));
     }
 
     private List<CustomerDTO> convertCustomerEntityListToCustomerDTOList(List<CustomerEntity> customerEntityList) {

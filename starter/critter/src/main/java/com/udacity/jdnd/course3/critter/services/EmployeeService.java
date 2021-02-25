@@ -2,9 +2,13 @@ package com.udacity.jdnd.course3.critter.services;
 
 import com.udacity.jdnd.course3.critter.entities.EmployeeEntity;
 import com.udacity.jdnd.course3.critter.repositories.EmployeeRepository;
+import com.udacity.jdnd.course3.critter.user.EmployeeRequestDTO;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -39,7 +43,8 @@ public class EmployeeService {
 
     /**
      * Set the available days for an employee
-     * @param dayOfWeek the employee is available
+     *
+     * @param dayOfWeek  the employee is available
      * @param employeeId to identify the employee
      */
     public void setAvailability(Set<DayOfWeek> dayOfWeek, long employeeId) {
@@ -50,8 +55,23 @@ public class EmployeeService {
 
     }
 
-    public List<EmployeeEntity> findAllEmployee(){
+    public List<EmployeeEntity> findAllEmployee() {
         return employeeRepository.findAll();
+    }
+
+
+    //convert localDate to days
+    //find by days and skill
+    public List<EmployeeEntity> findEmployeeByAvailability(EmployeeRequestDTO employeeRequestDTO) {
+
+        List<EmployeeEntity> employeeEntities = employeeRepository.findAllBySkillsInAndDaysAvailableContains( employeeRequestDTO.getSkills(), employeeRequestDTO.getDate().getDayOfWeek());
+        List<EmployeeEntity> employeeThatMeetRequirement = new ArrayList<>();
+        employeeEntities.forEach(employeeEntity -> {
+            if(employeeEntity.getSkills().containsAll(employeeRequestDTO.getSkills()))
+                employeeThatMeetRequirement.add(employeeEntity);
+        });
+        return employeeThatMeetRequirement;
+
     }
 
 

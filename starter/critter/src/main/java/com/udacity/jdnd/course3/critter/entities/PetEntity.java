@@ -30,9 +30,8 @@ public class PetEntity {
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 
-    @ManyToOne
-    @JoinColumn(name = "schedule_id_pet" )
-    private ScheduleEntity schedule;
+//    @ManyToMany(mappedBy = "pets")
+//    private ScheduleEntity schedule;
 
 
     public long getId() {
@@ -91,11 +90,11 @@ public class PetEntity {
         this.customer = customer;
     }
 
-    public ScheduleEntity getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(ScheduleEntity schedule) {
-        this.schedule = schedule;
-    }
+//    public ScheduleEntity getSchedule() {
+//        return schedule;
+//    }
+//
+//    public void setSchedule(ScheduleEntity schedule) {
+//        this.schedule = schedule;
+//    }
 }
