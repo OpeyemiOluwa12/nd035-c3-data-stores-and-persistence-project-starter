@@ -1,9 +1,7 @@
 package com.udacity.jdnd.course3.critter.pet;
 
-import com.udacity.jdnd.course3.critter.entities.EmployeeEntity;
 import com.udacity.jdnd.course3.critter.entities.PetEntity;
 import com.udacity.jdnd.course3.critter.services.PetService;
-import com.udacity.jdnd.course3.critter.user.EmployeeDTO;
 import com.udacity.jdnd.course3.critter.utils.Commons;
 import org.springframework.web.bind.annotation.*;
 
