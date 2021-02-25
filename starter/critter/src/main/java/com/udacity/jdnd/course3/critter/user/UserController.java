@@ -79,6 +79,12 @@ public class UserController {
         return customerEntityList.stream().map(this::convertCustomerEntityToCustomerDTO).collect(Collectors.toList());
     }
 
+    /**
+     * Convert customer entity to dto.
+     *
+     * @param customerEntity to be converted
+     * @return customerdto
+     */
     private CustomerDTO convertCustomerEntityToCustomerDTO(CustomerEntity customerEntity) {
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customerEntity, customerDTO);
@@ -94,7 +100,12 @@ public class UserController {
         return customerDTO;
     }
 
-
+    /**
+     * Convert Employee entity list to employee dto list
+     *
+     * @param employeeEntityList to be converted
+     * @return employee dto list
+     */
     private List<EmployeeDTO> convertEmployeeEntityListToEmployeeDTOList(List<EmployeeEntity> employeeEntityList) {
         return employeeEntityList.stream().map(employeeEntity -> ((EmployeeDTO) commons.convertObjectToObject(employeeEntity, new EmployeeDTO()))).collect(Collectors.toList());
     }

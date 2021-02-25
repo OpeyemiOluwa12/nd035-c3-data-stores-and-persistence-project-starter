@@ -6,73 +6,22 @@ import com.udacity.jdnd.course3.critter.user.EmployeeRequestDTO;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Service
-public class EmployeeService {
+public interface EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
+    public EmployeeEntity saveEmployee(EmployeeEntity employeeEntity);
 
-    public EmployeeService(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
+    public EmployeeEntity getEmployee(long id);
 
-    /**
-     * Save Employee records
-     *
-     * @param employeeEntity form
-     * @return saved employee details
-     */
-    public EmployeeEntity saveEmployee(EmployeeEntity employeeEntity) {
-        return employeeRepository.save(employeeEntity);
-    }
+    public void setAvailability(Set<DayOfWeek> dayOfWeek, long employeeId);
 
-    /**
-     * Get single employee details
-     *
-     * @param id of the employee
-     * @return employee details or empty employee details
-     */
-    public EmployeeEntity getEmployee(long id) {
-        return employeeRepository.findById(id).orElse(new EmployeeEntity());
-    }
-
-    /**
-     * Set the available days for an employee
-     *
-     * @param dayOfWeek  the employee is available
-     * @param employeeId to identify the employee
-     */
-    public void setAvailability(Set<DayOfWeek> dayOfWeek, long employeeId) {
-        EmployeeEntity employeeEntity = new EmployeeEntity();
-        employeeEntity.setDaysAvailable(dayOfWeek);
-        employeeEntity.setId(employeeId);
-        employeeRepository.save(employeeEntity);
-
-    }
-
-    public List<EmployeeEntity> findAllEmployee() {
-        return employeeRepository.findAll();
-    }
+    public List<EmployeeEntity> findAllEmployee();
 
 
-    //convert localDate to days
-    //find by days and skill
-    public List<EmployeeEntity> findEmployeeByAvailability(EmployeeRequestDTO employeeRequestDTO) {
-
-        List<EmployeeEntity> employeeEntities = employeeRepository.findAllBySkillsInAndDaysAvailableContains( employeeRequestDTO.getSkills(), employeeRequestDTO.getDate().getDayOfWeek());
-        List<EmployeeEntity> employeeThatMeetRequirement = new ArrayList<>();
-        employeeEntities.forEach(employeeEntity -> {
-            if(employeeEntity.getSkills().containsAll(employeeRequestDTO.getSkills()))
-                employeeThatMeetRequirement.add(employeeEntity);
-        });
-        return employeeThatMeetRequirement;
-
-    }
+    public List<EmployeeEntity> findEmployeeByAvailability(EmployeeRequestDTO employeeRequestDTO);
 
 
 }
