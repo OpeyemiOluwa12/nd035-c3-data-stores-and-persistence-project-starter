@@ -26,9 +26,6 @@ public class EmployeeEntity {
     @JoinTable(name = "employee_days_available")
     private Set<DayOfWeek> daysAvailable;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, name = "employee_id")
-    private ScheduleEntity schedule;
 
     public long getId() {
         return id;
@@ -61,4 +58,5 @@ public class EmployeeEntity {
     public void setDaysAvailable(Set<DayOfWeek> daysAvailable) {
         this.daysAvailable = daysAvailable;
     }
+
 }

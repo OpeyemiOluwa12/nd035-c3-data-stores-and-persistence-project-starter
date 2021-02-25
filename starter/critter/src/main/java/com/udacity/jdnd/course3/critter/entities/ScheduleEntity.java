@@ -16,10 +16,12 @@ public class ScheduleEntity {
     @Column(name = "schedule_id")
     private long id;
 
-    @OneToMany(mappedBy = "schedule")
+    @ManyToMany
+    @JoinTable (name = "employee_schedule", joinColumns = @JoinColumn(name = "schedule_id"), inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private List<EmployeeEntity> employees;
 
-    @OneToMany(mappedBy = "schedule")
+    @ManyToMany
+    @JoinTable(name = "pet_schedule", joinColumns = @JoinColumn(name = "schedule_id"), inverseJoinColumns = @JoinColumn(name = "pet_id"))
     private List<PetEntity> pets;
 
     private LocalDate date;

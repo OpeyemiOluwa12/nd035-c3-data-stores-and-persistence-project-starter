@@ -11,12 +11,11 @@ import java.util.List;
 @Repository
 public interface ScheduleRepository extends JpaRepository<ScheduleEntity, Long> {
 
-    @Query("SELECT sch from ScheduleEntity sch INNER JOIN PetEntity pet ON sch.id = pet.schedule.id where pet.id = :petId")
-    List<ScheduleEntity> findScheduleForPet(@Param("petId") long petId);
+    List<ScheduleEntity> findAllByPetsId( long petId);
 
-    @Query("SELECT sch from ScheduleEntity sch INNER JOIN EmployeeEntity emp ON sch.id = emp.schedule.id where emp.id = :employeeId")
-    List<ScheduleEntity> findScheduleForEmployee(@Param("employeeId") long employeeId);
+//    @Query("SELECT sch from ScheduleEntity sch INNER JOIN EmployeeEntity emp ON sch.id = emp.schedule.id where emp.id = :employeeId")
+    List<ScheduleEntity> findAllByEmployeesId( long employeeId);
 
-    @Query("SELECT sch from ScheduleEntity sch INNER JOIN PetEntity pet ON sch.id = pet.schedule.id where pet.customer.id = :customerId")
-    List<ScheduleEntity> findScheduleForCustomer(@Param("customerId") long customerId);
+//    @Query("SELECT sch from ScheduleEntity sch INNER JOIN PetEntity pet ON sch.id = pet.schedule.id where pet.customer.id = :customerId")
+//    List<ScheduleEntity> findScheduleForCustomer(@Param("customerId") long customerId);
 }
