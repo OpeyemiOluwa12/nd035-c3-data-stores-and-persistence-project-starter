@@ -6,6 +6,7 @@ import com.udacity.jdnd.course3.critter.services.EmployeeService;
 import com.udacity.jdnd.course3.critter.user.EmployeeRequestDTO;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -52,9 +53,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public void setAvailability(Set<DayOfWeek> dayOfWeek, long employeeId) {
-        EmployeeEntity employeeEntity = new EmployeeEntity();
+        EmployeeEntity employeeEntity = employeeRepository.findById(employeeId).orElseThrow(EntityNotFoundException::new);
         employeeEntity.setDaysAvailable(dayOfWeek);
-        employeeEntity.setId(employeeId);
         employeeRepository.save(employeeEntity);
 
     }
@@ -70,7 +70,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeEntity> findEmployeeByAvailability(EmployeeRequestDTO employeeRequestDTO) {
 
-        List<EmployeeEntity> employeeEntities = employeeRepository.findAllBySkillsInAndDaysAvailableContains(employeeRequestDTO.getSkills(), employeeRequestDTO.getDate().getDayOfWeek());
+        List<EmployeeEntity> employeeEntities = employeeRepository.findAllByDaysAvailableContaining(employeeRequestDTO.getDate().getDayOfWeek());
         List<EmployeeEntity> employeeThatMeetRequirement = new ArrayList<>();
         employeeEntities.forEach(employeeEntity -> {
             if (employeeEntity.getSkills().containsAll(employeeRequestDTO.getSkills()))
